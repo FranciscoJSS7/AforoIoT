@@ -1,0 +1,4 @@
+/build
+
+# Configuración de Firebase: no se publica en el repositorio (seguridad)
+google-services.json

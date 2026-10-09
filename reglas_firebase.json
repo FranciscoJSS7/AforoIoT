@@ -1,0 +1,40 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "usuarios": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+
+    "salas": {
+      ".read": "auth != null",
+      "$sala": {
+        ".write": "auth != null && root.child('usuarios/' + auth.uid + '/rol').val() === 'admin'",
+
+        "actual": {
+          ".write": "auth != null && root.child('usuarios/' + auth.uid + '/rol').exists()",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && (!data.exists() || newData.val() === 0 || newData.val() < data.val() || (newData.val() === data.val() + 1 && newData.val() <= newData.parent().child('maximo').val() && newData.parent().child('bloqueado').val() === false))"
+        },
+        "maximo":    { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 1000" },
+        "bloqueado": { ".validate": "newData.isBoolean()" },
+        "nombre":    { ".validate": "newData.isString() && newData.val().length <= 50" },
+        "$otro":     { ".validate": false }
+      }
+    },
+
+    "eventos": {
+      ".read": "auth != null && root.child('usuarios/' + auth.uid + '/rol').val() === 'admin'",
+      "$sala": {
+        ".indexOn": ["ts"],
+        "$evento": {
+          ".write": "auth != null && root.child('usuarios/' + auth.uid + '/rol').exists() && !data.exists()",
+          ".validate": "newData.hasChildren(['tipo', 'ts', 'por', 'origen']) && newData.child('ts').val() === now && newData.child('por').val() === auth.token.email && newData.child('tipo').val().matches(/^(entrada|salida|rechazado|ajuste)$/)"
+        }
+      }
+    }
+  }
+}
