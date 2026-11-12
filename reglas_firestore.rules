@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Denegar por defecto
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Historial de telemetría: /salas/{sala}/eventos/{id}
+    match /salas/{sala}/eventos/{evento} {
+      // Solo usuarios autenticados pueden leer
+      allow read: if request.auth != null;
+
+      // Solo se pueden CREAR eventos (inmutables: no se editan ni se borran) y se valida cada campo
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['evento', 'actual', 'maximo', 'ts', 'integro'])
+        && request.resource.data.evento in ['entrada', 'salida', 'rechazado', 'ajuste']
+        && request.resource.data.actual is int && request.resource.data.actual >= 0
+        && request.resource.data.maximo is int && request.resource.data.maximo > 0 && request.resource.data.maximo <= 1000
+        && request.resource.data.ts is int
+        && request.resource.data.integro is bool;
+
+      allow update, delete: if false;
+    }
+  }
+}

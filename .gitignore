@@ -13,3 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Certificados y claves (AWS IoT) - NUNCA subir
+*.pem
+*.crt
+*.key
+*.der
+*.cert
+secrets.py
+
+# Certificado de cliente de la app (AWS IoT) - NUNCA subir
+app/src/main/assets/*.p12

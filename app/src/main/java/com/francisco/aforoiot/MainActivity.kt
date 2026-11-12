@@ -48,13 +48,15 @@ class MainActivity : ComponentActivity() {
                         rol == "" -> SinRolScreen(mod, onCerrarSesion = { auth.signOut(); usuario = null })
                         pantalla == "puerta" -> PuertaScreen(mod, onVolver = { pantalla = "inicio" })
                         pantalla == "admin" && rol == "admin" -> AdminScreen(mod, onVolver = { pantalla = "inicio" })
+                        pantalla == "esp32" && rol == "admin" -> Esp32Screen(mod, onVolver = { pantalla = "inicio" })
                         else -> InicioScreen(
                             email = usuario?.email ?: "",
                             rol = rol ?: "",
                             modifier = mod,
                             onPuerta = { pantalla = "puerta" },
                             onAdmin = { pantalla = "admin" },
-                            onCerrarSesion = { auth.signOut(); usuario = null }
+                            onEsp32 = { pantalla = "esp32" },
+                            onCerrarSesion = { MqttRepo.desconectar(); auth.signOut(); usuario = null }
                         )
                     }
                 }

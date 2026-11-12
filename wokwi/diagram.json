@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "author": "AforoIoT",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-hc-sr04", "id": "ultra", "top": -120, "left": 200, "attrs": { "distance": "200" } },
+    { "type": "wokwi-pushbutton", "id": "btn", "top": 200, "left": 250, "attrs": { "color": "red" } },
+    { "type": "wokwi-led", "id": "ledV", "top": 260, "left": 20, "attrs": { "color": "green" } },
+    { "type": "wokwi-led", "id": "ledA", "top": 260, "left": 80, "attrs": { "color": "yellow" } },
+    { "type": "wokwi-led", "id": "ledR", "top": 260, "left": 140, "attrs": { "color": "red" } },
+    { "type": "wokwi-resistor", "id": "rV", "top": 200, "left": 20, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rA", "top": 200, "left": 80, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rR", "top": 200, "left": 140, "attrs": { "value": "220" } },
+    { "type": "wokwi-buzzer", "id": "bz", "top": 100, "left": 300, "attrs": { "volume": "0.1" } }
+  ],
+  "connections": [
+    ["esp:TX0", "$serialMonitor:RX", "", []],
+    ["esp:RX0", "$serialMonitor:TX", "", []],
+    ["ultra:VCC", "esp:VIN", "red", []],
+    ["ultra:GND", "esp:GND.1", "black", []],
+    ["ultra:TRIG", "esp:D5", "green", []],
+    ["ultra:ECHO", "esp:D18", "blue", []],
+    ["btn:1.l", "esp:D4", "orange", []],
+    ["btn:2.l", "esp:GND.1", "black", []],
+    ["esp:D25", "rV:1", "green", []],
+    ["rV:2", "ledV:A", "green", []],
+    ["ledV:C", "esp:GND.1", "black", []],
+    ["esp:D26", "rA:1", "yellow", []],
+    ["rA:2", "ledA:A", "yellow", []],
+    ["ledA:C", "esp:GND.1", "black", []],
+    ["esp:D27", "rR:1", "red", []],
+    ["rR:2", "ledR:A", "red", []],
+    ["ledR:C", "esp:GND.1", "black", []],
+    ["esp:D14", "bz:2", "purple", []],
+    ["bz:1", "esp:GND.1", "black", []]
+  ],
+  "dependencies": {}
+}

@@ -27,6 +27,7 @@ fun InicioScreen(
     modifier: Modifier = Modifier,
     onPuerta: () -> Unit,
     onAdmin: () -> Unit,
+    onEsp32: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     LaunchedEffect(rol) { if (rol == "admin") AforoRepo.crearSalaSiNoExiste() }
@@ -55,6 +56,13 @@ fun InicioScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Administrador", style = MaterialTheme.typography.titleLarge)
                 Text("Monitorea y controla el aforo", textAlign = TextAlign.Center)
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+        Button(onClick = onEsp32, modifier = Modifier.fillMaxWidth().height(90.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Dispositivo ESP32", style = MaterialTheme.typography.titleLarge)
+                Text("Telemetría y comandos por MQTT", textAlign = TextAlign.Center)
             }
         }
         }
